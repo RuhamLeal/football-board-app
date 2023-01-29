@@ -3,6 +3,7 @@ import generateToken from './utils/jwtGenerator';
 import { Login, IUser } from '../interfaces/User';
 import User from '../database/models/User';
 import ErrorHandler from './utils/ErrorHandler';
+import UserValidation from './validations/UserValidation';
 
 export default class UserService {
   constructor(private _model = User) {}
@@ -14,6 +15,8 @@ export default class UserService {
   }
 
   public async login(login: Login): Promise<string | null> {
+    UserValidation.validateLogin(login);
+
     const user = await this.getUserByEmail(login.email) as IUser;
 
     if (!user || !bcrypt.compareSync(login.password, user.password)) {

@@ -12,6 +12,7 @@ class App {
     this.router();
 
     this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.app.use(exceptionErr);
   }
 
   private router(): void {
@@ -28,7 +29,6 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
-    this.app.use(exceptionErr);
   }
 
   public start(PORT: string | number):void {
