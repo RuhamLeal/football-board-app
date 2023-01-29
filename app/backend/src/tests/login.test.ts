@@ -1,13 +1,13 @@
-import sinon from 'sinon';
-import chai from 'chai';
+import * as sinon from 'sinon';
+import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
 import { App } from '../app';
 import User from '../database/models/User';
 import { Response } from 'superagent';
-import jsonwebtoken from 'jsonwebtoken';
-import { token, user} from './mocks/userMocks'
+import * as jsonwebtoken from 'jsonwebtoken';
+import { payload, token, unecryptPass, user} from './mocks/userMocks'
 
 const { app } = new App();
 const { expect } = chai;
@@ -29,7 +29,7 @@ describe('Testes de integração para o endpoint @Post /login', async () => {
         .post('/login')
         .send({
           email: user.email,
-          password: user.password,
+          password: unecryptPass,
         });
 
       expect(chaiHttpResponse.status).to.be.equal(200);
@@ -96,4 +96,49 @@ describe('Testes de integração para o endpoint @Post /login', async () => {
       expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Incorrect email or password' });
     });
   })
+});
+
+describe('Teste de integração para o endpoint @Get /login/validate', async () => {
+
+  afterEach(sinon.restore)
+
+  let chaiHttpResponse: Response;
+
+  describe('Testa funcionamento correto da rota @Get /login/validate', async () => {
+    it('Testa se é retornado o role quando o token é validado', async () => {
+      sinon.stub(User, "findOne").resolves(user as User);
+      sinon.stub(jsonwebtoken, 'sign').resolves(token);
+      sinon.stub(jsonwebtoken, 'verify').resolves(payload);
+
+      chaiHttpResponse = await chai
+        .request(app)
+        .get('/login/validate')
+        .set({ "Authorization": token });
+
+      expect(chaiHttpResponse.status).to.be.equal(200);
+      expect(chaiHttpResponse.body).to.be.deep.equal({ role: user.role });
+    });
+  });
+
+  describe('Testa se retorna um erro quando o token não é validado', async () => {
+    it('Testa se retorna "Token not found" quando nenhum token é passado', async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .get('/login/validate')
+        .set({ "Authorization": '' });
+
+      expect(chaiHttpResponse.status).to.be.equal(401);
+      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Token not found' });
+    });
+
+    it('Testa se retorna "Invalid token" quando um token invalido é passado', async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .get('/login/validate')
+        .set({ "Authorization": 'invalidToken' });
+
+      expect(chaiHttpResponse.status).to.be.equal(401);
+      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Invalid token' });
+    });
+  });
 });
