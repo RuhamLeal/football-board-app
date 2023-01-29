@@ -36,4 +36,64 @@ describe('Testes de integração para o endpoint @Post /login', async () => {
       expect(chaiHttpResponse.body).to.be.deep.equal({ token: token });
     });
   });
+
+  describe('Testa as validações do endpoint @Post /login', async () => {
+    it('Retorna erro quando o email não é passado', async () => {
+      sinon.stub(User, "findOne").resolves(null);
+
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/login')
+        .send({
+          password: user.password,
+        });
+
+      expect(chaiHttpResponse.status).to.be.equal(400);
+      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'All fields must be filled' });
+    });
+
+    it('Retorna erro quando a senha não é passada', async () => {
+      sinon.stub(User, "findOne").resolves(null);
+
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/login')
+        .send({
+          email: user.email,
+        });
+
+      expect(chaiHttpResponse.status).to.be.equal(400);
+      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'All fields must be filled' });
+    });
+
+    it('Retorna erro quando o email é incorreto', async () => {
+      sinon.stub(User, "findOne").resolves(null);
+
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/login')
+        .send({
+          email: 'email',
+          password: user.password,
+        });
+
+      expect(chaiHttpResponse.status).to.be.equal(401);
+      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Incorrect email or password' });
+    });
+
+    it('Retorna erro quando a senha é incorreta', async () => {
+      sinon.stub(User, "findOne").resolves(null);
+
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/login')
+        .send({
+          email: user.email,
+          password: 'password',
+        });
+
+      expect(chaiHttpResponse.status).to.be.equal(401);
+      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Incorrect email or password' });
+    });
+  })
 });
