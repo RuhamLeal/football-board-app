@@ -1,4 +1,4 @@
-export interface User extends Login {
+export interface IUser extends Login {
   id: number;
   username: string;
   role: string;

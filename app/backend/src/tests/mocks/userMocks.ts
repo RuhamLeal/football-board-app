@@ -1,6 +1,6 @@
-import { User } from '../../interfaces/User'
+import { IUser } from '../../interfaces/User'
 
-const user: User = {
+const user: IUser = {
   id: 1,
   username: 'user',
   role: 'customer',

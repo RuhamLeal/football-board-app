@@ -1,4 +1,6 @@
 import * as express from 'express';
+import exceptionErr from './middlewares/exceptions';
+import userRouter from './routes/UserRouter';
 
 class App {
   public app: express.Express;
@@ -7,8 +9,13 @@ class App {
     this.app = express();
 
     this.config();
+    this.router();
 
     this.app.get('/', (req, res) => res.json({ ok: true }));
+  }
+
+  private router(): void {
+    this.app.use(userRouter);
   }
 
   private config():void {
@@ -21,6 +28,7 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
+    this.app.use(exceptionErr);
   }
 
   public start(PORT: string | number):void {
