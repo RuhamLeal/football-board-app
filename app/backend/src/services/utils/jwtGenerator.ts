@@ -3,9 +3,7 @@ import 'dotenv/config';
 
 const jwtSecret:jwt.Secret = process.env.JWT_SECRET as string;
 
-export default function generateToken(userId: number): string {
-  const data = { userId };
-
+export default function generateToken(data: object = {}): string {
   const token = jwt.sign(
     data,
     jwtSecret,

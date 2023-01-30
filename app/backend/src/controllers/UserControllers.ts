@@ -16,4 +16,19 @@ export default class UserController {
       next(error);
     }
   }
+
+  public async getUserRole(req: Request, res: Response, next: NextFunction)
+    : Promise<Response | void> {
+    try {
+      const { email } = req.body.user;
+
+      const user = await this._service.getUserByEmail(email);
+
+      if (user) {
+        res.status(200).json({ role: user.role });
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
 }

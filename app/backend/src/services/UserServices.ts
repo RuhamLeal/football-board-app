@@ -23,7 +23,7 @@ export default class UserService {
       throw new ErrorHandler(401, 'Incorrect email or password');
     }
 
-    const token = generateToken(user.id);
+    const token = generateToken({ id: user.id, email: user.email });
 
     return token;
   }
