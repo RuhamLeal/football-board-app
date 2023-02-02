@@ -8,4 +8,5 @@ export interface IUserService {
 
 export interface ITeamService {
   findAllTeams(): Promise<ITeam[]>;
+  findTeamById(id: number): Promise<ITeam | null>;
 }
