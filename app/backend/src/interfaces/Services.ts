@@ -16,4 +16,6 @@ export interface IMatchService {
   findAllMatchs(): Promise<IMatch[]>;
   findMatchesInProgress(value: string | null): Promise<IMatch[]>;
   createNewMatch(match: NewMatch): Promise<IMatch>
+  findMatchById(id: number): Promise<IMatch | null>
+  updateMatchProgress(id: number): Promise <number | null>
 }

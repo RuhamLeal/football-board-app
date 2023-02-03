@@ -131,14 +131,14 @@ describe('Teste de integração para o endpoint @Get /login/validate', async () 
       expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Token not found' });
     });
 
-    it('Testa se retorna "Invalid token" quando um token invalido é passado', async () => {
+    it('Testa se retorna "Token must be a valid token" quando um token invalido é passado', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .get('/login/validate')
         .set({ "Authorization": 'invalidToken' });
 
       expect(chaiHttpResponse.status).to.be.equal(401);
-      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Invalid token' });
+      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Token must be a valid token' });
     });
   });
 });

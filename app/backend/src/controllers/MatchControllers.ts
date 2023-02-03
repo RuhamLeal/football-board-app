@@ -32,4 +32,17 @@ export default class MatchController {
       next(error);
     }
   }
+
+  public async updateMatchProgress(req: Request, res: Response, next:
+  NextFunction): Promise<Response | void> {
+    try {
+      const { id } = req.params;
+
+      await this._service.updateMatchProgress(Number(id));
+
+      res.status(200).json({ message: 'Finished' });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

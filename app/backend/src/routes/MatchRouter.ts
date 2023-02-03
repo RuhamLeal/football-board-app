@@ -12,5 +12,9 @@ matchRouter.post(
   jwtAuthentication,
   (req, res, next) => matchController.postNewMatch(req, res, next),
 );
+matchRouter.patch(
+  '/:id/finish',
+  (req, res, next) => matchController.updateMatchProgress(req, res, next),
+);
 
 export default matchRouter;

@@ -14,7 +14,7 @@ const jwtAuthentication = async (req: Request, res: Response, next: NextFunction
     req.body.user = payload;
     next();
   } catch (err) {
-    return res.status(401).json({ message: 'Invalid token' });
+    return res.status(401).json({ message: 'Token must be a valid token' });
   }
 };
 

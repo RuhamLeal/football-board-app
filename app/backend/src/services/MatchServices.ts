@@ -47,6 +47,25 @@ export default class MatchService implements IMatchService {
     return allMatches;
   }
 
+  public async findMatchById(id: number): Promise<IMatch | null> {
+    MatchValidations.isIdValid(id);
+
+    const foundMatch = await this._model.findByPk(id);
+
+    if (!foundMatch) throw new ErrorHandler(404, 'Match not found');
+
+    return foundMatch;
+  }
+
+  public async updateMatchProgress(id: number): Promise <number | null> {
+    const foundMatch = await this.findMatchById(id);
+
+    if (!foundMatch?.inProgress) throw new ErrorHandler(400, 'Match already finished');
+
+    const [updatedMatch] = await this._model.update({ inProgress: false }, { where: { id } });
+    return updatedMatch;
+  }
+
   public async createNewMatch(match: NewMatch): Promise<IMatch> {
     MatchValidations.areEqualTeams(match.homeTeamId, match.awayTeamId);
 

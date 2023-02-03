@@ -12,4 +12,10 @@ export default class MatchValidations {
       throw new ErrorHandler(422, 'It is not possible to create a match with two equal teams');
     }
   }
+
+  public static isIdValid(id: number): void {
+    if (typeof id !== 'number' || Number.isNaN(id)) {
+      throw new ErrorHandler(400, 'Id must be a number');
+    }
+  }
 }
