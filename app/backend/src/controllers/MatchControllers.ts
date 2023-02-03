@@ -8,9 +8,15 @@ export default class MatchController {
   public async getAllMatches(req: Request, res: Response, next: NextFunction):
   Promise<Response | void> {
     try {
-      const allMatches = await this._service.findAllMatchs();
+      const inProgressValue = req.query.inProgress as string;
 
-      res.status(200).json(allMatches);
+      if (inProgressValue) {
+        const matchesInProgress = await this._service.findMatchesInProgress(inProgressValue);
+        res.status(200).json(matchesInProgress);
+      } else {
+        const allMatches = await this._service.findAllMatchs();
+        res.status(200).json(allMatches);
+      }
     } catch (error) {
       next(error);
     }

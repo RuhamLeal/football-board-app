@@ -14,4 +14,5 @@ export interface ITeamService {
 
 export interface IMatchService {
   findAllMatchs(): Promise<IMatch[]>;
+  findMatchesInProgress(value: string | null): Promise<IMatch[]>;
 }
