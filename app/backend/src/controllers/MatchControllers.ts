@@ -22,6 +22,24 @@ export default class MatchController {
     }
   }
 
+  public async updateMatchPoints(req: Request, res: Response, next: NextFunction):
+  Promise<Response | void> {
+    try {
+      const { id } = req.params;
+      const { homeTeamGoals, awayTeamGoals } = req.body;
+
+      await this._service.updateMatchScore(
+        Number(id),
+        Number(homeTeamGoals),
+        Number(awayTeamGoals),
+      );
+
+      res.status(200).json({ message: 'Score updated' });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   public async postNewMatch(req: Request, res: Response, next: NextFunction):
   Promise<Response | void> {
     try {

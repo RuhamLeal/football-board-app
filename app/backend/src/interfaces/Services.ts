@@ -18,4 +18,5 @@ export interface IMatchService {
   createNewMatch(match: NewMatch): Promise<IMatch>
   findMatchById(id: number): Promise<IMatch | null>
   updateMatchProgress(id: number): Promise <number | null>
+  updateMatchScore(id: number, goals: number, awayGoals: number): Promise <number | null>
 }

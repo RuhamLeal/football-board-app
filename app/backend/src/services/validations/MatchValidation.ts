@@ -18,4 +18,10 @@ export default class MatchValidations {
       throw new ErrorHandler(400, 'Id must be a number');
     }
   }
+
+  public static areGoalsValid(goals: number, awayGoals: number): void {
+    if (Number.isNaN(goals) || Number.isNaN(awayGoals)) {
+      throw new ErrorHandler(400, 'Goals values must be numbers');
+    }
+  }
 }

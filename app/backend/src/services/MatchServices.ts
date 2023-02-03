@@ -29,6 +29,26 @@ export default class MatchService implements IMatchService {
     return matchesInProgress;
   }
 
+  public async updateMatchScore(id: number, goals: number, awayGoals: number)
+    : Promise <number | null> {
+    MatchValidations.areEqualTeams(goals, awayGoals);
+
+    const match = await this.findMatchById(id);
+
+    if (!match?.inProgress) throw new ErrorHandler(400, 'Match already finished');
+
+    const [updatedMatch] = await this._model.update(
+      {
+        homeTeamGoals: goals,
+        awayTeamGoals: awayGoals,
+      },
+      {
+        where: { id },
+      },
+    );
+    return updatedMatch;
+  }
+
   public async findAllMatchs(): Promise<IMatch[]> {
     const allMatches = await this._model.findAll({
       include: [
