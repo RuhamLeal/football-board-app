@@ -131,3 +131,45 @@ describe('Teste de integração para o endpoint @Post /matches', async () => {
     });
   });
 });
+
+describe('Teste de integração para o endpoint @Patch /matches/:id/finish', async () => {
+
+  afterEach(sinon.restore)
+
+  let chaiHttpResponse: Response;
+
+  describe('Testa se o endpoint @Patch /matches/:id/finish funciona corretamente', async () => {
+    it('Testa se retorna finished ao atualizar o match', async () => {
+      sinon.stub(Match, "update").resolves([1]);
+
+      chaiHttpResponse = await chai
+        .request(app)
+        .patch('/matches/31/finish')
+
+      expect(chaiHttpResponse.status).to.be.equal(200);
+      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Finished' });
+    });
+  });
+
+  describe('Testa se da erro ao chamar o endpoint @Patch /matches/:id/finish incorretamente', async () => {
+    it('Testa se da erro ao tentar chamar o endpoint com id inexistente', async () => {
+
+      chaiHttpResponse = await chai
+        .request(app)
+        .patch('/matches/9999/finish')
+
+      expect(chaiHttpResponse.status).to.be.equal(404);
+      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Match not found' });
+    });
+
+    it('Testa se da erro ao tentar chamar o endpoint com id é inválido', async () => {
+
+      chaiHttpResponse = await chai
+        .request(app)
+        .patch('/matches/xxxxxxx/finish')
+
+      expect(chaiHttpResponse.status).to.be.equal(400);
+      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Id must be a number' });
+    });
+  });
+});
