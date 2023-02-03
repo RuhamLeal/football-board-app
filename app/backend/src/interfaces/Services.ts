@@ -1,4 +1,4 @@
-import { IMatch } from './Match';
+import { IMatch, NewMatch } from './Match';
 import ITeam from './Team';
 import { Login, IUser } from './User';
 
@@ -15,4 +15,5 @@ export interface ITeamService {
 export interface IMatchService {
   findAllMatchs(): Promise<IMatch[]>;
   findMatchesInProgress(value: string | null): Promise<IMatch[]>;
+  createNewMatch(match: NewMatch): Promise<IMatch>
 }

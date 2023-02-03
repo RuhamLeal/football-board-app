@@ -21,4 +21,15 @@ export default class MatchController {
       next(error);
     }
   }
+
+  public async postNewMatch(req: Request, res: Response, next: NextFunction):
+  Promise<Response | void> {
+    try {
+      const newMatch = await this._service.createNewMatch(req.body);
+
+      res.status(201).json(newMatch);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
