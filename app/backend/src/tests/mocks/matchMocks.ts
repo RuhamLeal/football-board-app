@@ -93,6 +93,17 @@ const matchesFinished: MockMatch[] = [
   }
 ];
 
+const sucessResult = {
+  homeTeamGoals: 2,
+  awayTeamGoals: 2,
+}
+
+const invalidResult = {
+  homeTeamGoals: 'x',
+  awayTeamGoals: 2,
+}
+
+
 const sucessMatch = {
   homeTeamId: 12,
   awayTeamId: 7,
@@ -129,4 +140,6 @@ export {
   sucessMatchRes,
   invalidMatch,
   sameMatch,
+  sucessResult,
+  invalidResult,
 }

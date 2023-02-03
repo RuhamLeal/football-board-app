@@ -6,7 +6,7 @@ import chaiHttp = require('chai-http');
 import { App } from '../app';
 import Match from '../database/models/Match';
 import { Response } from 'superagent';
-import { invalidMatch, matches, matchesFinished, matchesProgress, sameMatch, sucessMatch, sucessMatchRes } from './mocks/matchMocks'
+import { invalidMatch, invalidResult, matches, matchesFinished, matchesProgress, sameMatch, sucessMatch, sucessMatchRes, sucessResult } from './mocks/matchMocks'
 import { payload, token } from './mocks/userMocks';
 import * as jsonwebtoken from 'jsonwebtoken';
 
@@ -170,6 +170,73 @@ describe('Teste de integração para o endpoint @Patch /matches/:id/finish', asy
 
       expect(chaiHttpResponse.status).to.be.equal(400);
       expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Id must be a number' });
+    });
+  });
+});
+
+describe('Teste de integração para o endpoint @Patch /matches/:id', async () => {
+
+  afterEach(sinon.restore)
+
+  let chaiHttpResponse: Response;
+
+  describe('Testa o funcionamento correto do endpoint @Patch /matches/:id', async () => {
+    it('Testa se retorna uma mensagem de sucesso ao atualizar um jogo', async () => {
+      sinon.stub(Match, "update").resolves([1]);
+
+      chaiHttpResponse = await chai
+        .request(app)
+        .patch('/matches/42')
+        .send(sucessResult);
+
+      expect(chaiHttpResponse.status).to.be.equal(200);
+      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Score updated' });
+    });
+  });
+
+  describe('Testa se da erro ao chamar endpoint @Patch /matches/:id', async () => {
+    it('Testa se retorna erro ao passar partida inexistente', async () => {
+
+      chaiHttpResponse = await chai
+        .request(app)
+        .patch('/matches/9999')
+        .send(sucessMatch);
+
+      expect(chaiHttpResponse.status).to.be.equal(404);
+      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Match not found' });
+    });
+
+    it('Testa se retorna erro ao mandar partida invalida', async () => {
+
+      chaiHttpResponse = await chai
+        .request(app)
+        .patch('/matches/42')
+        .send(invalidResult);
+
+      expect(chaiHttpResponse.status).to.be.equal(400);
+      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Goals values must be numbers' });
+    });
+
+    it('Testa se retorna erro ao passar id invalido', async () => {
+
+      chaiHttpResponse = await chai
+        .request(app)
+        .patch('/matches/xxxxxxx')
+        .send(sucessResult);
+
+      expect(chaiHttpResponse.status).to.be.equal(400);
+      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Id must be a number' });
+    });
+
+    it('Testa se retorna erro ao passar partida finalizada', async () => {
+
+      chaiHttpResponse = await chai
+        .request(app)
+        .patch('/matches/1')
+        .send(sucessResult);
+
+      expect(chaiHttpResponse.status).to.be.equal(400);
+      expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Match already finished' });
     });
   });
 });
