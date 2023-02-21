@@ -24,4 +24,5 @@ export interface IMatchService {
 
 export interface ILeaderboardService {
   findStandingByRef(reference: 'home' | 'away'): Promise<ILeaderboard[]>;
+  findDefaultStadings(): Promise<ILeaderboard[]>
 }

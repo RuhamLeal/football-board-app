@@ -1,12 +1,13 @@
 import { ILeaderboard, LeaderboardLn, ScoreStats } from '../../interfaces/Leaderboard';
 
 export default class LeaderboardValidation {
-  private static startGame(gameList: LeaderboardLn[]) {
+  private static startGame(gameList: LeaderboardLn[], reference: 'home' | 'away') {
+    const awayTeam = reference === 'home' ? 'away' : 'home';
     const gameStats = gameList.reduce((acc: any, curr: any) => {
-      if (curr.homeTeamGoals > curr.awayTeamGoals) {
+      if (curr[`${reference}TeamGoals`] > curr[`${awayTeam}TeamGoals`]) {
         acc.totalPoints += 3;
         acc.totalVictories += 1;
-      } else if (curr.homeTeamGoals < curr.awayTeamGoals) {
+      } else if (curr[`${reference}TeamGoals`] < curr[`${awayTeam}TeamGoals`]) {
         acc.totalLosses += 1;
       } else {
         acc.totalPoints += 1;
@@ -21,12 +22,13 @@ export default class LeaderboardValidation {
     return gameStats;
   }
 
-  private static startScore(array: LeaderboardLn[]) {
+  private static startScore(array: LeaderboardLn[], reference: 'home' | 'away') {
+    const awayTeam = reference === 'home' ? 'away' : 'home';
     const stats = array.reduce(
       (acc: ScoreStats, curr: any) => {
-        acc.goalsFavor += curr.homeTeamGoals;
-        acc.goalsOwn += curr.awayTeamGoals;
-        acc.goalsBalance += (curr.homeTeamGoals - curr.awayTeamGoals);
+        acc.goalsFavor += curr[`${reference}TeamGoals`];
+        acc.goalsOwn += curr[`${awayTeam}TeamGoals`];
+        acc.goalsBalance += (curr[`${reference}TeamGoals`] - curr[`${awayTeam}TeamGoals`]);
         return acc;
       },
       {
@@ -37,6 +39,28 @@ export default class LeaderboardValidation {
     );
 
     return stats;
+  }
+
+  private static calculateDefaultStatsData(homeArr: ILeaderboard[], awayArr: ILeaderboard[]) {
+    const defaultStats = homeArr.map((teamOne) => {
+      const awayStats = awayArr.find((teamTwo) => teamTwo.name === teamOne.name) as ILeaderboard;
+
+      const lb = { ...teamOne };
+
+      lb.totalPoints += awayStats.totalPoints;
+      lb.totalGames += awayStats.totalGames;
+      lb.totalVictories += awayStats.totalVictories;
+      lb.totalDraws += awayStats.totalDraws;
+      lb.totalLosses += awayStats.totalLosses;
+      lb.goalsFavor += awayStats.goalsFavor;
+      lb.goalsOwn += awayStats.goalsOwn;
+      lb.goalsBalance = lb.goalsFavor - lb.goalsOwn;
+      lb.efficiency = ((lb.totalPoints / (lb.totalGames * 3)) * 100).toFixed(2);
+
+      return lb;
+    });
+
+    return defaultStats;
   }
 
   private static sortByPoints(teamOne: ILeaderboard, teamTwo: ILeaderboard) {
@@ -80,11 +104,24 @@ export default class LeaderboardValidation {
     };
   }
 
+  public static sortDefaultData(homeArr: ILeaderboard[], awayArr: ILeaderboard[]) {
+    const defaultStatsData = this.calculateDefaultStatsData(homeArr, awayArr);
+
+    return defaultStatsData
+      .sort(LeaderboardValidation.sortByMultipleParams(
+        LeaderboardValidation.sortByPoints,
+        LeaderboardValidation.sortByVictory,
+        LeaderboardValidation.sortByBalance,
+        LeaderboardValidation.sortByGoalsFavor,
+        LeaderboardValidation.sortByOwnGoals,
+      ));
+  }
+
   public static sortDates(array: LeaderboardLn[], reference: 'home' | 'away') {
     const matches = reference === 'home' ? 'homeMatches' : 'awayMatches';
     const newArray = array.map((team) => {
-      const gamesStats = LeaderboardValidation.startGame(team[matches] as any);
-      const scoreStats = LeaderboardValidation.startScore(team[matches] as any);
+      const gamesStats = LeaderboardValidation.startGame(team[matches] as any, reference);
+      const scoreStats = LeaderboardValidation.startScore(team[matches] as any, reference);
       const efficiency = ((gamesStats.totalPoints / (gamesStats.totalGames * 3)) * 100).toFixed(2);
 
       return { name: team.teamName, ...gamesStats, ...scoreStats, efficiency };

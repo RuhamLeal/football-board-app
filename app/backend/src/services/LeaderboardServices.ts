@@ -7,6 +7,13 @@ import LeaderboardValidation from './validations/LeaderboardValidation';
 export default class LeaderboardService implements ILeaderboardService {
   constructor(private _matchModel = Match, private _teamModel = Team) {}
 
+  public async findDefaultStadings(): Promise<ILeaderboard[]> {
+    const homeStadings = await this.findStandingByRef('home');
+    const awayStandings = await this.findStandingByRef('away');
+
+    return LeaderboardValidation.sortDefaultData(homeStadings, awayStandings);
+  }
+
   public async findStandingByRef(reference: 'home' | 'away'): Promise<ILeaderboard[]> {
     const data = await this._teamModel.findAll({
       include: [
