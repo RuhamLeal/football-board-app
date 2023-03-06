@@ -139,13 +139,13 @@ Para rodar o projeto localmente, siga os passos abaixo.
 2. Clone o repositório;
 
 ```
-git clone git@github.com:garciaagui/trybe-project-25-trybe-futebol-clube.git
+git clone https://github.com/RuhamLeal/football-board-app.git
 ```
 
 3. Navegue até a raiz do projeto;
 
 ```
-cd trybe-project-25-trybe-futebol-clube/
+cd ./football-board-app
 ```
 
 4. Na raiz do projeto, instale as dependências com o comando abaixo;
