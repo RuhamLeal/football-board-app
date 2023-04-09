@@ -41,6 +41,7 @@ O TFC é uma aplicação fullstack que oferece informações sobre jogos e class
 
 - Roda na porta `3000` do `localhost`;
 - O front se comunica com serviço de back-end pela url `http://localhost:3001`.
+- Disponibilizado pela trybe.
 
 4️⃣ **Docker:**
 
