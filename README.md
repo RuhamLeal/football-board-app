@@ -1,6 +1,6 @@
 <a name="readme-top"></a>
 
-<h1 align="center">Projeto Trybe Futebol Clube (TFC) ⚽</h1>
+<h1 align="center">Trybe Futebol Clube ⚽</h1>
 
 <details>
   <summary>Sumário</summary><br />
