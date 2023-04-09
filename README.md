@@ -18,18 +18,10 @@
 
 ## Sobre o Projeto
 
-Projeto **25** do curso de Desenvolvimento Web da [Trybe][trybe-site-url].
-
 O TFC é uma aplicação fullstack que oferece informações sobre jogos e classificações de futebol.
 
-Fui responsável pelo desenvolvimento do back-end dockerizado utilizando modelagem de dados através do Sequelize, de forma que o front-end pudesse consumir os dados da API adequadamente. A arquitetura segue o modelo MSC e foram aplicados os princípios e conceitos de POO e SOLID.
-
-> ℹ️ Todo front-end foi desenvolvido e disponibilizado pela Trybe.
-
 <details>
-  <summary><strong> 🧱 Caso queira se aprofundar na estrutura do projeto, é só clicar aqui.</strong></summary><br />
-
-O projeto é composto de 4 entidades:
+  <summary><strong> Detalhes</strong></summary><br />
 
 1️⃣ **Banco de dados:**
 
@@ -56,7 +48,7 @@ O projeto é composto de 4 entidades:
 </details>
 
 <details>
-  <summary><strong> 🎞️ Aqui você pode conferir uma demonstração do projeto.</strong></summary><br />
+  <summary><strong>Demo</strong></summary><br />
   
   https://user-images.githubusercontent.com/70448374/216853287-5550cb20-0d01-42da-85c4-c1fc1551faa7.mp4
 
@@ -65,11 +57,6 @@ O projeto é composto de 4 entidades:
 <br/>
 
 ## Tecnologias
-
-Para garantir a qualidade do código, fora utilizado o [ESlint][eslint-url]. Para virtualizar a aplicação em containers, o [Docker][docker-url] foi o escolhido.
-
-Abaixo você pode conferir integralmente as tecnologias empregadas no projeto.
-
 <details>
   <summary><strong>✨ Front-end</strong></summary><br />
 
@@ -167,7 +154,7 @@ cd app/ && npm run compose:up:dev
 6. No navegador, visite `http://localhost:3000`. Se tudo ocorreu bem, será possível utilizar a aplicação.
 
 <details>
-  <summary><strong> ℹ️ Para instruções adicionais, clique aqui.</strong></summary><br />
+  <summary><strong>tests+</strong></summary><br />
 
 - Para executar os testes do back-end, vá até o diretório `app/backend/` e utilize o comando abaixo.
 
@@ -199,14 +186,6 @@ npm run test:coverage
 
 <br/>
 
-## Sobre a Trybe
-
-_"A [Trybe][trybe-site-url] é uma escola do futuro para qualquer pessoa que queira melhorar de vida e construir uma carreira de sucesso em tecnologia, onde a pessoa só paga quando conseguir um bom trabalho."_
-
-_"O programa conta com mais de 1.500 horas de aulas presenciais e online, aborda introdução ao desenvolvimento de software, front-end, back-end, ciência da computação, engenharia de software, metodologias ágeis e habilidades comportamentais._"
-
-<br/>
-
 ## Contato
 
 [![Linkedin][linkedin-badge]][linkedin-url]
@@ -215,7 +194,6 @@ _"O programa conta com mais de 1.500 horas de aulas presenciais e online, aborda
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[trybe-site-url]: https://www.betrybe.com/
 [axios-url]: https://axios-http.com/docs/intro
 [bcryptjs-url]: https://www.npmjs.com/package/bcryptjs
 [chai-url]: https://www.chaijs.com/
